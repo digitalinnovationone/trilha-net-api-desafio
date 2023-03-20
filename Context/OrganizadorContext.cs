@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using TrilhaApiDesafio.Models;
 
@@ -5,11 +6,17 @@ namespace TrilhaApiDesafio.Context
 {
     public class OrganizadorContext : DbContext
     {
-        public OrganizadorContext(DbContextOptions<OrganizadorContext> options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Tarefa;Integrated Security=true");
         }
 
-        public DbSet<Tarefa> Tarefas { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Tarefa).Assembly);
+        }
+
+        public DbSet<Tarefa> Tarefas { get; set; }        
+        
     }
 }
