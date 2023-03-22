@@ -23,7 +23,7 @@ namespace TrilhaApiDesafio.Controllers
             // TODO: Validar o tipo de retorno. Se não encontrar a tarefa, retornar NotFound,
             // caso contrário retornar OK com a tarefa encontrada
             
-            var obterPorId = await _context.Tarefas.FindAsync(id);
+            var obterPorId = await _context.Tarefas.FirstOrDefaultAsync(x=> x.Id == id);
             
             if(obterPorId == null)
                 return NotFound();
@@ -32,22 +32,22 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult ObterTodos()
+        public async Task<IActionResult> ObterTodos()
         {
             // TODO: Buscar todas as tarefas no banco utilizando o EF
 
-            var obterTodos = _context.Tarefas.ToList();
+            var obterTodos = await _context.Tarefas.ToListAsync();
 
             return Ok(obterTodos);
         }
 
         [HttpGet("ObterPorTitulo")]
-        public  IActionResult ObterPorTitulo(string titulo)
+        public async Task<IActionResult> ObterPorTitulo(string titulo)
         {
             // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o titulo recebido por parâmetro
             // Dica: Usar como exemplo o endpoint ObterPorData
 
-            var obterPorTitulo =  _context.Tarefas.Where(x=> x.Titulo == titulo);
+            var obterPorTitulo = await _context.Tarefas.Where(x=> x.Titulo == titulo).ToListAsync();
 
             if(obterPorTitulo == null)
                 return NotFound();
@@ -56,30 +56,30 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorData")]
-        public IActionResult ObterPorData(DateTime data)
+        public async Task<IActionResult> ObterPorData(DateTime data)
         {
-            var tarefa = _context.Tarefas.Where(x => x.Data.Date == data.Date);
+            var tarefa = await _context.Tarefas.Where(x => x.Data.Date == data.Date).ToListAsync();
                            
             return Ok(tarefa);
         }
 
          [HttpGet("ObterPorStatus")]
-         public IActionResult ObterPorStatus(EnumStatusTarefa status)
+         public async Task<IActionResult> ObterPorStatus(EnumStatusTarefa status)
         {
              // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o status recebido por parâmetro
              // Dica: Usar como exemplo o endpoint ObterPorData
-             var tarefa = _context.Tarefas.Where(x => x.Status == status);
+             var tarefa = await _context.Tarefas.Where(x => x.Status == status).ToListAsync();
              return Ok(tarefa);
          }
 
         [HttpPost]
-        public IActionResult Criar(Tarefa tarefa)
+        public async Task<IActionResult> Criar(Tarefa tarefa)
         {
             if (tarefa.Data == DateTime.MinValue)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
 
-            _context.Tarefas.Add(tarefa);
-            _context.SaveChanges();
+            await _context.Tarefas.AddAsync(tarefa);
+            await _context.SaveChangesAsync();
             // TODO: Adicionar a tarefa recebida no EF e salvar as mudanças (save changes)
             return CreatedAtAction(nameof(ObterPorId), new { id = tarefa.Id }, tarefa);
         }
