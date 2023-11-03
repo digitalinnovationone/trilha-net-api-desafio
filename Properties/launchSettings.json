@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "TrilhaApiDesafio": {
+    "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
