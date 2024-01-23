@@ -27,9 +27,9 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult ObterTodos(int id) //Pendente
+        public IActionResult ObterTodos() //OK
         {
-            var tarefa = _context.Tarefas.Find(id);
+            var tarefa = _context.Tarefas.ToList();
             return Ok(tarefa);
         }
 
