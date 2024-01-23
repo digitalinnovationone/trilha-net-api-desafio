@@ -16,8 +16,8 @@ namespace TrilhaApiDesafio.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult ObterPorId(int id)
+        [HttpGet("{id}")] 
+        public IActionResult ObterPorId(int id) //OK
         {
             var tarefa = _context.Tarefas.Find(id) ;
             if (tarefa is null){
@@ -27,14 +27,14 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult ObterTodos()
+        public IActionResult ObterTodos() //Pendente
         {
             // TODO: Buscar todas as tarefas no banco utilizando o EF
             return Ok();
         }
 
         [HttpGet("ObterPorTitulo")]
-        public IActionResult ObterPorTitulo(string titulo)
+        public IActionResult ObterPorTitulo(string titulo) //OK
         {
             var tarefa = _context.Tarefas.Find(titulo);
             if (tarefa is null){
@@ -44,7 +44,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorData")]
-        public IActionResult ObterPorData(DateTime data)
+        public IActionResult ObterPorData(DateTime data) //OK?
         {
             var tarefa = _context.Tarefas.Where(x => x.Data.Date == data.Date);
             
@@ -52,7 +52,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorStatus")]
-        public IActionResult ObterPorStatus(EnumStatusTarefa status)
+        public IActionResult ObterPorStatus(EnumStatusTarefa status) //Pendente
         {
             // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o status recebido por parâmetro
             // Dica: Usar como exemplo o endpoint ObterPorData
@@ -61,7 +61,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpPost]
-        public IActionResult Criar(Tarefa tarefa)
+        public IActionResult Criar(Tarefa tarefa) //OK
         {
             if (tarefa.Data == DateTime.MinValue)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
@@ -72,7 +72,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Tarefa tarefa)
+        public IActionResult Atualizar(int id, Tarefa tarefa) //Pendente
         {
             var tarefaBanco = _context.Tarefas.Find(id);
 
@@ -88,7 +88,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Deletar(int id)
+        public IActionResult Deletar(int id) //OK
         {
             var tarefaBanco = _context.Tarefas.Find(id);
 
