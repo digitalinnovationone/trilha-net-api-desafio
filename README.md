@@ -1,3 +1,15 @@
+## Description
+🎯 Development was **strictly focused** on addressing the challenge and **making specific code improvements**.
+
+## Summary
+Primary objectives of the challenge:
+- ✅ Implemented  `ObterPorId()`, `ObterTodos()`, `ObterPorTitulo()`, `ObterPorData()`, `ObterPorStatus()`, `Criar()`, `Atualizar()`, `Deletar()` methods of the `TaskController` class.
+
+Additional contributions to the project:
+- 🔧 Updated project to **.NET 8**
+
+---
+
 # DIO - Trilha .NET - API e Entity Framework
 www.dio.me
 
