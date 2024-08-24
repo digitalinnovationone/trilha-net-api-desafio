@@ -54,5 +54,8 @@ Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que e
 ```
 
 
-## Solução
-O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+## Desafio
+- Desafio concluído utilizando uma API, banco de dados Microsoft SQL Server Express Edition
+- sdk .net 6.0.425
+- Microsoft.EntityFrameworkCore.Design versão 6.0.33
+- Microsoft.EntityFrameworkCore.SqlServer versão 6.0.33
