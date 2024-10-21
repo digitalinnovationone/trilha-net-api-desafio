@@ -1,6 +1,12 @@
 # DIO - Trilha .NET - API e Entity Framework
 www.dio.me
 
+# Atualização
+esse sistema está programado no formato MVC, porem ainda não contepla a parte front-end
+mas para testa o sistema pode-se mudar a url para: 
+https://(seu localhost)/documentation ou https://(seu localhost)/documentation/index.html (caso o primeiro não responda)
+nas proximas atualizações o sistema ira contempla a parte front-end.
+
 ## Desafio de projeto
 Para este desafio, você precisará usar seus conhecimentos adquiridos no módulo de API e Entity Framework, da trilha .NET da DIO.
 
