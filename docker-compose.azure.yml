@@ -1,0 +1,15 @@
+﻿# docker-compose para produção na VM (não precisa da imagem do postgres [ele roda na azure])
+services:
+  api:
+    container_name: trilha_api
+    # A instrução de build é a mesma
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # Expõe a porta 80, a porta padrão da web
+      - "80:8080"
+    environment:
+      # A Connection String será injetada no momento da execução
+      - ConnectionStrings__ConexaoPadrao=${PROD_CONNECTION_STRING}
+      - ASPNETCORE_URLS=http://+:8080
