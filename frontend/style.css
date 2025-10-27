@@ -1,0 +1,259 @@
+:root {
+  color-scheme: light dark;
+  --bg-color: #f5f6fa;
+  --card-bg: #ffffffdd;
+  --text-color: #1f2933;
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --border: #d8dee6;
+  --danger: #dc2626;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #101827;
+    --card-bg: #1f2937ee;
+    --text-color: #f9fafb;
+    --border: #374151;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem clamp(1.5rem, 3vw, 4rem);
+  background: linear-gradient(120deg, var(--accent), #4f46e5);
+  color: white;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 600;
+}
+
+.api-url {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+main {
+  display: grid;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 4rem);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-weight: 500;
+}
+
+.field input,
+.field textarea,
+.field select {
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  font: inherit;
+  color: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+button {
+  font: inherit;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+}
+
+button.primary:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+button.secondary {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent);
+}
+
+button.secondary:hover {
+  background: rgba(37, 99, 235, 0.16);
+}
+
+button.icon-button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: rgba(148, 163, 184, 0.18);
+  color: inherit;
+  border-radius: 12px;
+}
+
+button.icon-button:hover {
+  background: rgba(148, 163, 184, 0.32);
+}
+
+button.icon-button.delete {
+  color: var(--danger);
+}
+
+button.icon-button.delete:hover {
+  background: rgba(220, 38, 38, 0.16);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead {
+  background: rgba(148, 163, 184, 0.15);
+}
+
+table th,
+table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.col-actions {
+  width: 120px;
+  text-align: center;
+}
+
+tbody tr:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+td.empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: rgba(100, 116, 139, 0.9);
+}
+
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: rgba(17, 24, 39, 0.9);
+  color: white;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  max-width: 320px;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.35);
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .col-actions {
+    width: auto;
+  }
+}

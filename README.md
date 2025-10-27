@@ -56,3 +56,23 @@ Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que e
 
 ## Solução
 O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+
+## Front-end
+
+O diretório `frontend` contém uma interface web simples para consumir os endpoints expostos pela API.
+
+### Pré-requisitos
+
+* Node.js 18+ (apenas para executar um servidor estático opcional).
+
+### Como executar
+
+1. Inicie a API executando `dotnet run` na raiz do projeto. Por padrão ela será exposta em `http://localhost:5181`.
+2. Em outra janela, sirva os arquivos estáticos do diretório `frontend`. Uma opção é utilizar o [`http-server`](https://www.npmjs.com/package/http-server):
+
+   ```bash
+   npx http-server frontend -p 5500
+   ```
+
+   Você também pode abrir o `index.html` com a extensão *Live Server* do VS Code ou qualquer outro servidor local equivalente.
+3. Acesse `http://localhost:5500` (ou a porta configurada) no navegador. A interface irá carregar e consumir automaticamente os dados da API. Use `Ctrl + U` na tela para alterar a URL base da API, se necessário.
