@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizador de Tarefas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <h1>Organizador de Tarefas</h1>
+      <span class="api-url" id="apiUrlDisplay"></span>
+    </header>
+
+    <main>
+      <section class="card" aria-labelledby="form-title">
+        <h2 id="form-title">Cadastro e edição</h2>
+        <form id="taskForm">
+          <input type="hidden" id="taskId" />
+          <div class="field">
+            <label for="titulo">Título</label>
+            <input id="titulo" name="titulo" type="text" required maxlength="100" />
+          </div>
+          <div class="field">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao" rows="3" required maxlength="500"></textarea>
+          </div>
+          <div class="group">
+            <div class="field">
+              <label for="data">Data</label>
+              <input id="data" name="data" type="datetime-local" required />
+            </div>
+            <div class="field">
+              <label for="status">Status</label>
+              <select id="status" name="status" required>
+                <option value="Pendente">Pendente</option>
+                <option value="Finalizado">Finalizado</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="primary">Salvar</button>
+            <button type="button" id="cancelEdit" class="secondary hidden">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="filters-title">
+        <div class="section-header">
+          <h2 id="filters-title">Filtros</h2>
+          <button type="button" id="reloadTasks" class="icon-button" title="Recarregar tarefas" aria-label="Recarregar tarefas">
+            ⟳
+          </button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label for="filtroTitulo">Título</label>
+            <input id="filtroTitulo" type="text" placeholder="Buscar por título" />
+            <button type="button" id="buscarTitulo" class="secondary">Buscar</button>
+          </div>
+          <div class="field">
+            <label for="filtroData">Data</label>
+            <input id="filtroData" type="date" />
+            <button type="button" id="buscarData" class="secondary">Buscar</button>
+          </div>
+          <div class="field">
+            <label for="filtroStatus">Status</label>
+            <select id="filtroStatus">
+              <option value="">Todos</option>
+              <option value="Pendente">Pendente</option>
+              <option value="Finalizado">Finalizado</option>
+            </select>
+            <button type="button" id="buscarStatus" class="secondary">Buscar</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="lista-title">
+        <h2 id="lista-title">Tarefas</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tasksTableBody">
+              <tr>
+                <td colspan="5" class="empty">Nenhuma tarefa carregada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <template id="taskRowTemplate">
+      <tr>
+        <td data-field="titulo"></td>
+        <td data-field="descricao"></td>
+        <td data-field="data"></td>
+        <td data-field="status"></td>
+        <td class="col-actions">
+          <button type="button" class="icon-button edit" title="Editar tarefa">✎</button>
+          <button type="button" class="icon-button delete" title="Excluir tarefa">🗑</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
