@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "TrilhaApiDesafio": {
+    "Sistema-Agendamento-Tarefa": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
