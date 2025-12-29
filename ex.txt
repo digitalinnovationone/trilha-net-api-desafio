@@ -1,0 +1,3 @@
+criar migration: dotnet ef migrations add NomeMigration
+
+persistir a migration na bd: dotnet-ef database update
