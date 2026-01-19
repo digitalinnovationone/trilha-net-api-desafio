@@ -1,0 +1,95 @@
+@page "/todos/edit/{Id:int}"
+@using TrilhaApiDesafio.Front.Models
+@inject TrilhaApiDesafio.Front.Services.TodoApiClient Api
+@inject NavigationManager Nav
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h1 class="h3 mb-0">Edit Todo</h1>
+            <div class="text-muted small">Update task information</div>
+        </div>
+
+        <button class="btn btn-outline-secondary" @onclick="Back">Back</button>
+    </div>
+
+    @if (loading)
+    {
+        <div class="d-flex align-items-center gap-2">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            <div>Loading...</div>
+        </div>
+    }
+    else if (todo is null)
+    {
+        <div class="alert alert-warning" role="alert">
+            Todo not found.
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="Back">Back</button>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <EditForm Model="todo" OnValidSubmit="Save">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div class="mb-3">
+                        <label class="form-label">To-do</label>
+                        <InputText class="form-control" @bind-Value="todo.Task" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <InputTextArea class="form-control" @bind-Value="todo.Description" rows="4" />
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Deadline</label>
+                            <InputDate class="form-control" @bind-Value="todo.Deadline" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Status</label>
+                            <InputSelect class="form-select" @bind-Value="todo.Status">
+                                @foreach (var s in Enum.GetValues<EnumChoreStatus>())
+                                {
+                                    <option value="@s">@s</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-outline-secondary" @onclick="Back">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private bool loading = true;
+    private Todo? todo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todo = await Api.FindByIdAsync(Id);
+        loading = false;
+    }
+
+    private async Task Save()
+    {
+        if (todo is null) return;
+        await Api.UpdateAsync(Id, todo);
+        Nav.NavigateTo("/todos");
+    }
+
+    private void Back() => Nav.NavigateTo("/todos");
+}

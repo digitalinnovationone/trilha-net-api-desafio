@@ -1,0 +1,162 @@
+@page "/todos"
+@using TrilhaApiDesafio.Front.Models
+@inject TrilhaApiDesafio.Front.Services.TodoApiClient Api
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h1 class="h3 mb-0">Todos</h1>
+            <div class="text-muted small">Manage your tasks</div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" @onclick="NewTodo">
+                <span class="oi oi-plus me-2" aria-hidden="true"></span>
+                New
+            </button>
+            <button class="btn btn-outline-secondary" @onclick="Load" disabled="@loading">
+                <span class="oi oi-reload me-2" aria-hidden="true"></span>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    @if (error is not null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> @error
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (loading)
+            {
+                <div class="d-flex align-items-center gap-2">
+                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                    <div>Loading...</div>
+                </div>
+            }
+            else if (todos.Count == 0)
+            {
+                <div class="text-center py-5">
+                    <div class="mb-2 text-muted">No todos found.</div>
+                    <button class="btn btn-primary" @onclick="NewTodo">Create your first todo</button>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:80px;">Id</th>
+                                <th style="min-width:220px;">To-do</th>
+                                <th style="min-width:320px;">Description</th>
+                                <th style="width:140px;">Status</th>
+                                <th style="width:160px;">Deadline</th>
+                                <th style="width:200px;" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in todos.OrderByDescending(x => x.Id))
+                            {
+                                <tr>
+                                    <td class="text-muted">@t.Id</td>
+
+                                    <td class="fw-semibold">@t.Task</td>
+
+                                    <td>
+                                        @if (string.IsNullOrWhiteSpace(t.Description))
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                        else
+                                        {
+                                            @t.Description
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <span class="badge @StatusBadgeClass(t.Status)">
+                                            @t.Status
+                                        </span>
+                                    </td>
+
+                                    <td>@t.Deadline.ToString("yyyy-MM-dd")</td>
+
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-primary" @onclick="() => Edit(t.Id)">
+                                                <span class="oi oi-pencil me-1" aria-hidden="true"></span>
+                                                Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" @onclick="() => Delete(t.Id)">
+                                                <span class="oi oi-trash me-1" aria-hidden="true"></span>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool loading;
+    private string? error;
+    private List<Todo> todos = new();
+
+    protected override async Task OnInitializedAsync() => await Load();
+
+    private void NewTodo() => Nav.NavigateTo("/todos/new");
+    private void Edit(int id) => Nav.NavigateTo($"/todos/edit/{id}");
+
+    private string StatusBadgeClass(EnumChoreStatus status) => status switch
+    {
+        EnumChoreStatus.Done => "bg-success",
+        _ => "bg-warning text-dark"
+    };
+
+    private async Task Delete(int id)
+    {
+        var ok = await JS.InvokeAsync<bool>("confirm", $"Delete todo #{id}?");
+        if (!ok) return;
+
+        try
+        {
+            await Api.DeleteAsync(id);
+            await Load();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+    private async Task Load()
+    {
+        loading = true;
+        error = null;
+
+        try
+        {
+            todos = await Api.FindAllAsync();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}

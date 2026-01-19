@@ -1,0 +1,68 @@
+@page "/todos/new"
+@using TrilhaApiDesafio.Front.Models
+@inject TrilhaApiDesafio.Front.Services.TodoApiClient Api
+@inject NavigationManager Nav
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h1 class="h3 mb-0">New Todo</h1>
+            <div class="text-muted small">Create a new task</div>
+        </div>
+
+        <button class="btn btn-outline-secondary" @onclick="Cancel">Back</button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <EditForm Model="todo" OnValidSubmit="Save">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+
+                <div class="mb-3">
+                    <label class="form-label">To-do</label>
+                    <InputText class="form-control" @bind-Value="todo.Task" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <InputTextArea class="form-control" @bind-Value="todo.Description" rows="4" />
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Deadline</label>
+                        <InputDate class="form-control" @bind-Value="todo.Deadline" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Status</label>
+                        <InputSelect class="form-select" @bind-Value="todo.Status">
+                            @foreach (var s in Enum.GetValues<EnumChoreStatus>())
+                            {
+                                <option value="@s">@s</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" @onclick="Cancel">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Todo todo = new();
+
+    private async Task Save()
+    {
+        await Api.CreateAsync(todo);
+        Nav.NavigateTo("/todos");
+    }
+
+    private void Cancel() => Nav.NavigateTo("/todos");
+}

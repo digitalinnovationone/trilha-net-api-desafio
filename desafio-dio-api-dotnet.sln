@@ -1,0 +1,30 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrilhaApiDesafio", "TrilhaApiDesafio.Api\TrilhaApiDesafio.csproj", "{B2A4F8B2-8DD4-4B9D-BA68-AD3D9D5346E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrilhaApiDesafio.Front", "TrilhaApiDesafio.Front\TrilhaApiDesafio.Front.csproj", "{9B2CD9A6-36FE-4A79-82F2-4B1D605ED5C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2A4F8B2-8DD4-4B9D-BA68-AD3D9D5346E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A4F8B2-8DD4-4B9D-BA68-AD3D9D5346E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2A4F8B2-8DD4-4B9D-BA68-AD3D9D5346E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2A4F8B2-8DD4-4B9D-BA68-AD3D9D5346E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B2CD9A6-36FE-4A79-82F2-4B1D605ED5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2CD9A6-36FE-4A79-82F2-4B1D605ED5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2CD9A6-36FE-4A79-82F2-4B1D605ED5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2CD9A6-36FE-4A79-82F2-4B1D605ED5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A88B0993-3FDF-45CF-BE0A-04D0DCBED852}
+	EndGlobalSection
+EndGlobal
