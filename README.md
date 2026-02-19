@@ -56,3 +56,61 @@ Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que e
 
 ## Solução
 O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+
+## Resumo do Guerreiro
+🚀 Desafio: API de Sistema Gerenciador de Tarefas
+Esta API foi desenvolvida como parte de um desafio técnico para praticar conceitos de CRUD com ASP.NET Core 6.0, Entity Framework Core e SQL Server.
+
+🛠️ Tecnologias Utilizadas
+.NET 6.0 SDK
+
+Entity Framework Core 6.0
+
+SQL Server / LocalDB
+
+Swagger (OpenAPI) para documentação e testes
+
+⚠️ Guia de Sobrevivência: O Conflito de Versões (Feature Fix)
+Se você estiver tentando rodar este projeto em uma máquina que possui o SDK do .NET 10 (ou superior), poderá encontrar o erro:
+
+A compatible .NET SDK was not found. Requested SDK version: 6.0.x
+
+Como resolvi esse problema:
+Para que o projeto compile e as Migrations funcionem corretamente, apliquei os seguintes passos:
+
+Versões de Pacotes: Garanti que todos os pacotes do EF Core no arquivo .csproj estivessem travados na versão 6.0.0.
+
+Global.json: Foi necessário criar um arquivo global.json na raiz do projeto para instruir o CLI do .NET a utilizar o SDK 6.
+
+Runtime: Além do SDK, é fundamental ter o ASP.NET Core Runtime 6.0 instalado para que o comando dotnet ef database update consiga executar as ferramentas de design.
+
+🏗️ Como Rodar o Projeto
+Clonar o repositório:
+
+Bash
+git clone https://github.com/Gisele-lab/trilha-net-api-desafio.git
+Configurar o Banco de Dados:
+No arquivo appsettings.json, ajuste a sua Connection String:
+
+JSON
+"ConexaoPadrao": "Server=localhost\\SQLEXPRESS;Database=TarefasDB;Trusted_Connection=True;TrustServerCertificate=True;"
+Aplicar Migrations:
+
+Bash
+dotnet ef database update
+Executar a API:
+
+Bash
+dotnet watch run
+Acesse: https://localhost:7295/swagger
+
+📝 Funcionalidades (Endpoints)
+POST /Tarefa: Cria uma nova tarefa.
+
+GET /Tarefa/{id}: Busca uma tarefa por ID.
+
+GET /Tarefa/ObterTodos: Lista todas as tarefas do banco.
+
+PUT /Tarefa/{id}: Atualiza os dados de uma tarefa existente.
+
+DELETE /Tarefa/{id}: Remove uma tarefa do banco.
