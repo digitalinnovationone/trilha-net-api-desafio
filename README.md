@@ -1,3 +1,18 @@
+# Desenvolvimento de API RESTful com Integração de Banco de Dados
+
+## 📌 Sobre o Projeto
+Desenvolvimento de uma API completa utilizando .NET, focada na criação de CRUDs (Create, Read, Update, Delete) e exposição de endpoints para consumo externo.
+
+## 🛠️ Tecnologias e Conceitos
+*   **ASP.NET Core Web API:** Estruturação de rotas e controllers.
+*   **Entity Framework:** Mapeamento objeto-relacional para persistência de dados.
+*   **Swagger:** Documentação automática da API para testes e integração.
+*   **Arquitetura:** Separação de responsabilidades e injeção de dependência.
+
+## 💡 Diferencial Técnico
+O projeto foca em **Clean Code** e organização modular, facilitando a manutenção e escala do sistema — conceitos diretamente aplicáveis ao desenvolvimento com NestJS e Node.js.
+
+
 # DIO - Trilha .NET - API e Entity Framework
 www.dio.me
 
