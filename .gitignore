@@ -10,6 +10,11 @@
 *.userosscache
 *.sln.docstates
 
+# Local SQLite database files (development)
+*.db
+*.db-shm
+*.db-wal
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

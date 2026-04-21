@@ -56,3 +56,67 @@ Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que e
 
 ## Solução
 O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+
+## Stack utilizada
+
+- .NET 8 (ASP.NET Core Web API)
+- Entity Framework Core 8 (SQL Server)
+- Swashbuckle (Swagger UI)
+- Deploy no Azure App Service + Azure SQL Database
+
+## Como rodar localmente
+
+Pré-requisitos: SDK do .NET 8 instalado.
+
+```powershell
+dotnet restore
+dotnet build
+```
+
+Antes do primeiro `dotnet run`, configure a connection string via User Secrets (não versionada):
+
+```powershell
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:ConexaoPadrao" "Server=SEU_SERVIDOR,1433;Initial Catalog=Organizador;User ID=SEU_USUARIO;Password=SUA_SENHA;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+```
+
+Gere a migration inicial e atualize o banco:
+
+```powershell
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+Execute a aplicação:
+
+```powershell
+dotnet run
+```
+
+O Swagger estará disponível em `https://localhost:<porta>/swagger`.
+
+## Segurança de credenciais
+
+- Nunca suba `User ID` e `Password` reais em `appsettings.json`.
+- Em desenvolvimento: use `dotnet user-secrets` (os valores ficam fora do repositório, em `%APPDATA%\Microsoft\UserSecrets`).
+- Em produção (Azure App Service), defina em **Configuration > Application settings**:
+  - `ConnectionStrings__ConexaoPadrao` com a string real da Azure SQL Database.
+- O `appsettings.json` neste repositório contém apenas placeholders (`SEU_SERVIDOR`, `SEU_USUARIO`, `SUA_SENHA`).
+
+## Deploy no Azure
+
+Recomendações:
+
+- SQL Server (logical server): pode reaproveitar um existente.
+- Azure SQL Database: crie uma nova database (ex.: `Organizador`) no mesmo logical server.
+- App Service: crie um novo Web App (ex.: `aulaorganizadorapi`) apontando runtime `.NET 8 (LTS)`.
+- App Service Plan: pode reaproveitar um já existente para reduzir custo.
+- Connection string: configure em **Application settings** a chave `ConnectionStrings__ConexaoPadrao`.
+- O `Program.cs` executa `Database.Migrate()` no startup, então as migrations presentes no repositório serão aplicadas automaticamente à base Azure SQL durante o primeiro boot.
+
+Publicação:
+
+- Via Visual Studio: botão direito no projeto > Publish > Azure App Service.
+- Via CLI: `dotnet publish -c Release` + Zip Deploy para o App Service.
+- Via GitHub Actions: workflow de build/publish direcionando ao App Service.

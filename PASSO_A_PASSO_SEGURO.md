@@ -1,0 +1,128 @@
+# Passo a passo: como executar o projeto
+
+Este guia descreve, em ordem, como rodar a API `trilha-net-api-desafio` em
+ambiente local (SQLite) e em produção (SQL Server / Azure SQL), seguindo o
+mesmo padrão adotado no projeto `ProductAPI`.
+
+## Pré-requisitos
+
+- .NET SDK 8
+- Git
+- (Opcional, só para produção) Acesso ao SQL Server / Azure SQL
+
+## 1) Clonar o repositório
+
+```powershell
+git clone <URL_DO_REPOSITORIO>
+cd trilha-net-api-desafio
+```
+
+## 2) Restaurar pacotes e compilar
+
+```powershell
+dotnet restore
+dotnet build
+```
+
+## 3) Executar localmente com SQLite (Development)
+
+Em ambiente de desenvolvimento o projeto usa **SQLite** como banco local, sem
+exigir SQL Server na máquina. O arquivo de banco é criado automaticamente na
+raiz do projeto.
+
+1. Garanta que a variável de ambiente esteja em `Development` (o
+   `launchSettings.json` já faz isso para o perfil `TrilhaApiDesafio`).
+2. A connection string local está em `appsettings.Development.json`:
+
+   ```json
+   "ConnectionStrings": {
+     "ConexaoPadrao": "Data Source=organizador-local.db"
+   }
+   ```
+
+3. Rode a aplicação:
+
+   ```powershell
+   $env:ASPNETCORE_ENVIRONMENT = "Development"
+   dotnet run --project TrilhaApiDesafio.csproj --urls "http://localhost:5181"
+   ```
+
+4. Acesse o Swagger: `http://localhost:5181/swagger`.
+
+> No modo Development, o código chama `Database.EnsureCreated()` e cria o
+> arquivo `organizador-local.db` automaticamente, sem necessidade de rodar
+> migrations.
+
+## 4) Rodar em produção (SQL Server / Azure SQL)
+
+Em qualquer ambiente diferente de `Development`, a aplicação usa
+`UseSqlServer` e aplica `Database.Migrate()` no startup.
+
+### 4.1) Definir a connection string
+
+- Nunca versionar credenciais reais em `appsettings.json`.
+- Preferir variável de ambiente no host:
+
+  ```
+  ConnectionStrings__ConexaoPadrao=Server=tcp:<SERVIDOR>,1433;Initial Catalog=Organizador;User ID=<USUARIO>;Password=<SENHA>;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+  ```
+
+  Observação: use exatamente dois underlines (`__`) entre `ConnectionStrings`
+  e `ConexaoPadrao`.
+
+### 4.2) Gerar migrations antes do deploy
+
+Só é necessário na primeira vez (ou quando o modelo mudar):
+
+```powershell
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add InitialCreate
+```
+
+As migrations geradas devem ser commitadas no repositório para que a aplicação
+consiga aplicar `Database.Migrate()` no primeiro boot em produção.
+
+### 4.3) Publicar no Azure App Service
+
+1. Criar App Service com runtime `.NET 8 (LTS)`.
+2. Em `Configuration > Application settings`, adicionar:
+   - `ASPNETCORE_ENVIRONMENT=Production`
+   - `ConnectionStrings__ConexaoPadrao=<string real Azure SQL>`
+3. Publicar via Visual Studio (`Publish > Azure App Service`) ou
+   `dotnet publish -c Release` + Zip Deploy.
+
+### 4.4) Validar pós-deploy
+
+- Abrir `https://<seu-app>.azurewebsites.net/Tarefa/ObterTodos` para ver a
+  lista (vazia no início).
+- Criar uma tarefa via `POST /Tarefa` e reconsultar `GET /Tarefa/ObterTodos`.
+
+## 5) Desenvolvimento local apontando para SQL Server (opcional)
+
+Se quiser testar localmente contra SQL Server em vez de SQLite:
+
+1. Definir a variável de ambiente diferente de `Development`, por exemplo:
+
+   ```powershell
+   $env:ASPNETCORE_ENVIRONMENT = "Staging"
+   ```
+
+2. Informar a connection string real via User Secrets (não versionado):
+
+   ```powershell
+   dotnet user-secrets init
+   dotnet user-secrets set "ConnectionStrings:ConexaoPadrao" "Server=<SERVIDOR>,1433;Initial Catalog=Organizador;User ID=<USUARIO>;Password=<SENHA>;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+   ```
+
+3. `dotnet run` ira usar `UseSqlServer` e exigira que as migrations existam.
+
+## 6) Resumo rápido (dev local em SQLite)
+
+```powershell
+dotnet restore
+dotnet build
+$env:ASPNETCORE_ENVIRONMENT = "Development"
+dotnet run --project TrilhaApiDesafio.csproj --urls "http://localhost:5181"
+```
+
+Abrir: `http://localhost:5181/swagger`
